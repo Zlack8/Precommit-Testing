@@ -1,81 +1,60 @@
-\# Security Checks
+# Security
 
+This repository uses pre-commit hooks to perform security and repository hygiene checks before commits are created.
 
+## Secret Detection
 
-This repository uses pre-commit hooks to perform security and repository
+Gitleaks scans staged changes for potential secrets, including:
 
-hygiene checks before a commit is created.
-
-
-
-\## Secret detection
-
-
-
-Gitleaks scans staged changes for potentially exposed secrets, including
-
-API keys, access tokens, passwords, private keys, and other credentials.
-
-
+* API keys
+* Access tokens
+* Passwords
+* Private keys
+* Other credentials
 
 If Gitleaks detects a potential secret, the commit is blocked.
 
+## If a Secret Is Detected
 
+If your commit is blocked by Gitleaks:
 
-\### If Gitleaks blocks your commit
-
-
-
-1\. Review the file and line reported by Gitleaks.
-
-2\. Remove the secret from the changes being committed.
-
-3\. If the detected value is a real credential, revoke or rotate it immediately.
-
-4\. Replace the credential with an environment variable or approved secret-management mechanism.
-
-5\. Stage the corrected changes.
-
-6\. Run the commit again.
-
-
+1. Review the file and finding reported by Gitleaks.
+2. Remove the secret from the changes being committed.
+3. If the detected value is a real credential, revoke or rotate it immediately.
+4. Replace the credential with an environment variable or an approved secret-management mechanism.
+5. Stage the corrected changes.
+6. Run the commit again.
 
 Do not commit real credentials to the repository.
 
+## False Positives
 
+Gitleaks findings should be reviewed before assuming they are false positives.
 
-\### False positives
+If you believe a finding is not a real secret, discuss it with the repository maintainers before adding an exception or changing the Gitleaks configuration.
 
+Exceptions should be used carefully and should not be used to bypass legitimate security findings.
 
+## Scope
 
-If you believe Gitleaks has detected a value that is not actually a secret,
+The pre-commit configuration is a local security control designed to prevent potential secrets from being introduced through normal commits.
 
-do not simply bypass the security check.
+It does not replace other security controls such as:
 
+* CI/CD security scanning
+* Dependency vulnerability scanning
+* Static application security testing (SAST)
+* Historical repository scanning
+* Remote repository security controls
 
+## Reporting a Real Credential Exposure
 
-Discuss the finding with the repository maintainers before adding an exception
+If a real credential has been committed or exposed:
 
-or changing the Gitleaks configuration.
+1. Treat the credential as compromised.
+2. Revoke or rotate it immediately.
+3. Notify the appropriate repository/project maintainer.
+4. Determine whether the credential exists in Git history or other locations.
+5. Follow the organization's incident-response process.
 
-
-
-\## Other pre-commit checks
-
-
-
-The repository also checks for:
-
-
-
-\- Invalid YAML
-
-\- Invalid JSON
-
-\- Trailing whitespace
-
-\- Missing end-of-file newlines
-
-\- Unresolved Git merge conflicts
-
-\- Accidentally added large files
+Do not rely on simply deleting the credential from the latest version of a file. A credential may remain present in Git history.
