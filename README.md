@@ -1,6 +1,6 @@
 # Gitleaks Pre-commit Test
 
-# Precommit Testing
+## Precommit Testing
 
 A proof-of-concept repository for testing **pre-commit security and repository hygiene checks** before proposing their use in the Mozilla SLIIT repositories.
 
@@ -59,14 +59,21 @@ Gitleaks checks the staged content that is being committed.
 * Git
 * Python
 * pre-commit
-* Gitleaks
+
+### Install pre-commit
+
+If pre-commit is not already installed:
+
+```powershell
+pip install pre-commit
+```
 
 Install the pre-commit hooks after cloning the repository:
 
 ```powershell
 pre-commit install
 ```
-
+> Note: This assumes the developer has internet access.
 Run all hooks manually:
 
 ```powershell
@@ -78,6 +85,24 @@ After installation, the hooks run automatically during normal commits:
 ```powershell
 git add .
 git commit -m "Your commit message"
+```
+
+```text
+Git
+  ↓
+Python
+  ↓
+pre-commit
+  ↓
+pre-commit install
+  ↓
+pre-commit reads .pre-commit-config.yaml
+  ↓
+Gitleaks hook is prepared
+  ↓
+git commit
+  ↓
+Gitleaks runs
 ```
 
 ## Security Test Results
